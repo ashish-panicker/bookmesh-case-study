@@ -1,0 +1,8 @@
+graph TD
+    Client((Client/Postman)) -->|HTTP Requests| Gateway(API Gateway :8080)
+    Gateway -->|Routes /books/**| BookService(Book Service :8081)
+    Gateway -->|Routes /orders/**| OrderService(Order Service :8082)
+    OrderService -.->|RestTemplate/RestClient| BookService
+    BookService -.->|Registers| Eureka(Eureka Server :8761)
+    OrderService -.->|Registers| Eureka
+    Gateway -.->|Registers| Eureka
