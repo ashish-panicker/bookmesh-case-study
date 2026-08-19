@@ -19,7 +19,7 @@ graph TD
     Gateway -->|/books/**| BookService(Book Service)
     Gateway -->|/orders/**| OrderService(Order Service)
     
-    OrderService -.->|REST HTTP GET /books/{id}| BookService
+    OrderService -.->|REST HTTP GET /books/[id]| BookService
     
     BookService -.->|Registers/Heartbeat| Eureka(Service Registry)
     OrderService -.->|Registers/Heartbeat| Eureka
