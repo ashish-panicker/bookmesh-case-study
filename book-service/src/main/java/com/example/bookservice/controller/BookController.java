@@ -2,6 +2,7 @@ package com.example.bookservice.controller;
 
 import com.example.bookservice.dto.BookDto;
 import com.example.bookservice.dto.StandardResponse;
+import com.example.bookservice.dto.StockCheckRequest;
 import com.example.bookservice.exceptions.ResourceExistsException;
 import com.example.bookservice.exceptions.ResourceNotFoundException;
 import com.example.bookservice.service.BookService;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -100,6 +103,18 @@ public class BookController {
         boolean exists = service.checkIfStockExists(id, quantity);
         var response = new StandardResponse(
                 exists ? "Stock available" : "Stock not available",
+                HttpStatus.OK,
+                exists
+        );
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/stock/bulk-check")
+    public ResponseEntity<StandardResponse> checkBulkStock(@Valid @RequestBody List<StockCheckRequest> requests) {
+        log.info("Checking bulk stock for {} items", requests.size());
+        boolean exists = service.checkBulkStockExists(requests);
+        var response = new StandardResponse(
+                exists ? "All stock available" : "Some stock not available",
                 HttpStatus.OK,
                 exists
         );

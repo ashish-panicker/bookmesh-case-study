@@ -1,6 +1,7 @@
 package com.example.bookservice.service;
 
 import com.example.bookservice.dto.BookDto;
+import com.example.bookservice.dto.StockCheckRequest;
 import com.example.bookservice.exceptions.ResourceNotFoundException;
 import com.example.bookservice.model.Book;
 import com.example.bookservice.repository.BookRepository;
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -81,10 +83,24 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @Transactional
     public boolean deductStock(Long id, int quantity) {
         var book = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cannot find resource with id: " + id));
         book.setStock(book.getStock() - quantity);
         repository.save(book);
+        return true;
+    }
+
+    @Override
+    public boolean checkBulkStockExists(List<StockCheckRequest> requests) {
+        if (requests == null || requests.isEmpty()) {
+            return true;
+        }
+        for (var request : requests) {
+            if (!repository.existsByIdAndStockGreaterThanEqual(request.bookId(), request.quantity())) {
+                return false;
+            }
+        }
         return true;
     }
 }

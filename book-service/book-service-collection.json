@@ -10,15 +10,11 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://localhost:8080/books",
+          "raw": "http://localhost:8081/books",
           "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "books"
-          ]
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["books"]
         }
       },
       "response": []
@@ -27,26 +23,17 @@
       "name": "Create Book",
       "request": {
         "method": "POST",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json"
-          }
-        ],
+        "header": [{"key": "Content-Type", "value": "application/json"}],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"title\": \"Clean Architecture\",\n  \"author\": \"Robert C. Martin\",\n  \"stock\": 5,\n  \"unit_price\": 34.99\n}"
         },
         "url": {
-          "raw": "http://localhost:8080/books",
+          "raw": "http://localhost:8081/books",
           "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "books"
-          ]
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["books"]
         }
       },
       "response": []
@@ -57,16 +44,72 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://localhost:8080/books/1",
+          "raw": "http://localhost:8081/books/1",
           "protocol": "http",
-          "host": [
-            "localhost"
-          ],
-          "port": "8080",
-          "path": [
-            "books",
-            "1"
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["books", "1"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Check Stock",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8081/books/1/stock?quantity=5",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["books", "1", "stock"],
+          "query": [
+            {
+              "key": "quantity",
+              "value": "5"
+            }
           ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Deduct Stock",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8081/books/1/deduct?quantity=2",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["books", "1", "deduct"],
+          "query": [
+            {
+              "key": "quantity",
+              "value": "2"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Bulk Check Stock",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n  {\n    \"bookId\": 1,\n    \"quantity\": 2\n  },\n  {\n    \"bookId\": 2,\n    \"quantity\": 1\n  }\n]"
+        },
+        "url": {
+          "raw": "http://localhost:8081/books/stock/bulk-check",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8081",
+          "path": ["books", "stock", "bulk-check"]
         }
       },
       "response": []

@@ -32,4 +32,6 @@ public interface BookService {
 
 
     boolean deductStock(Long id, int quantity);
+    
+    boolean checkBulkStockExists(List<com.example.bookservice.dto.StockCheckRequest> requests);
 }
