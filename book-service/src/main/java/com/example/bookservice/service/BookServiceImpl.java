@@ -1,9 +1,12 @@
 package com.example.bookservice.service;
 
 import com.example.bookservice.dto.BookDto;
+import com.example.bookservice.exceptions.ResourceNotFoundException;
 import com.example.bookservice.model.Book;
 import com.example.bookservice.repository.BookRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,10 +34,20 @@ public class BookServiceImpl implements BookService {
         return repository.findById(id);
     }
 
+    /**
+     * @deprecated Use {@link #findAll(Pageable)} instead for better performance and pagination support.
+     */
+    @Deprecated
     @Override
     public List<Book> findAll() {
         log.debug("Fetching all books");
         return repository.findAll();
+    }
+
+    @Override
+    public Page<Book> findAll(Pageable pageable) {
+        log.debug("Fetching all books with pagination");
+        return repository.findAll(pageable);
     }
 
     @Override
@@ -60,5 +73,18 @@ public class BookServiceImpl implements BookService {
     public Optional<Book> findByAuthorAndTitle(String author, String title) {
         log.debug("Finding book by author: {} and title: {}", author, title);
         return repository.findByAuthorAndTitle(author, title);
+    }
+
+    @Override
+    public boolean checkIfStockExists(Long bookId, int stock) {
+        return repository.existsByIdAndStockGreaterThanEqual(bookId, stock);
+    }
+
+    @Override
+    public boolean deductStock(Long id, int quantity) {
+        var book = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cannot find resource with id: " + id));
+        book.setStock(book.getStock() - quantity);
+        repository.save(book);
+        return true;
     }
 }

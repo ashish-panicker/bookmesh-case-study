@@ -12,6 +12,7 @@ public class BookServiceApplication {
         log.info("Starting BookServiceApplication...");
         SpringApplication.run(BookServiceApplication.class, args);
         log.info("BookServiceApplication started successfully.");
+
     }
 
 }
