@@ -55,7 +55,8 @@ public class BookController {
      *   <li>{@code http://localhost:8081/books} (Default fetch)</li>
      *   <li>{@code http://localhost:8081/books?page=1&size=5} (Fetch 2nd page with 5 records per page)</li>
      *   <li>{@code http://localhost:8081/books?sort=title,asc} (Sort all books by title ascending)</li>
-     *   <li>{@code http://localhost:8081/books?page=0&size=10&sort=unitPrice,desc} (Fetch first 10 books sorted by price descending)</li>
+     *   <li>{@code http://localhost:8081/books?page=0&size=10&sort=unitPrice,desc} (Fetch first 10 books
+     *      sorted by price descending)</li>
      * </ul>
      * <br>
      * Note: While Pageable handles pagination and sorting, field-based filtering (e.g., searching by author)
@@ -74,7 +75,8 @@ public class BookController {
 //            var response = new StandardResponse("No Books", HttpStatus.NO_CONTENT, "");
 //            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
 //        }
-        var response = new StandardResponse("Books fetched", HttpStatus.OK, books.isEmpty() ? "No Books Found" : books);
+        var response = new StandardResponse("Books fetched", HttpStatus.OK,
+                books.isEmpty() ? "No Books Found" : books);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
